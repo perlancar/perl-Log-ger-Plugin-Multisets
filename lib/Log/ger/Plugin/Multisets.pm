@@ -39,7 +39,7 @@ sub get_hooks {
                     for my $prefix (keys %{ $conf{$conf_key} }) {
                         my $init_args = $conf{$conf_key}{$prefix};
                         push @{ $routine_names->{$routine_names_key} }, map
-                            { ["${prefix}_$_", $_, undef, $init_args] }
+                            { ["${prefix}$_", $_, undef, $init_args] }
                             @$levels;
                     }
                 }
@@ -50,7 +50,7 @@ sub get_hooks {
 }
 
 1;
-# ABSTRACT: Create multiple sets of logger routines
+# ABSTRACT: Create multiple sets of logger routines, each set with its own init arguments
 
 =for Pod::Coverage ^(.+)$
 
@@ -60,8 +60,8 @@ Instead of having to resort to OO style to log to different categories:
 
  use Log::ger ();
 
- my $access_log = Log::ger->get_logger('access');
- my $error_log  = Log::ger->get_logger('error');
+ my $access_log = Log::ger->get_logger(category => 'access');
+ my $error_log  = Log::ger->get_logger(category => 'error');
 
  $access_log->info ("goes to access log");
  $access_log->warn ("goes to access log");
@@ -73,14 +73,14 @@ you can instead:
 
  use Log::ger::Plugin Multisets => (
      log_sub_prefixes => {
-         # prefix  => category
-         log_      => 'error',
-         access_   => 'access',
+         # prefix  => init args
+         log_      => {category=>'error' }, # or undef, to use the default init args (including category)
+         access_   => {category=>'access'},
      },
      is_sub_prefixes => {
-         # prefix  => category
-         is_       => 'error',
-         access_is => 'access',
+         # prefix   => category
+         is_        => {category=>'error' },
+         access_is_ => {category=>'access'},
      },
  );
  use Log::ger;
@@ -94,8 +94,9 @@ you can instead:
 
 =head1 DESCRIPTION
 
-This plugin lets you create multiple sets of logger subroutines if you want to
-log to different categories without resorting to OO style.
+This plugin lets you create multiple sets of logger subroutines, each set with
+its own init arguments. This can be used e.g. when you want to log to different
+categories without resorting to OO style.
 
 
 =head1 CONFIGURATION

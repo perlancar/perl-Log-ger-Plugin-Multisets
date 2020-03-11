@@ -11,7 +11,7 @@ use warnings;
 use Log::ger ();
 
 sub meta { +{
-    v => 1,
+    v => 2,
 } }
 
 sub get_hooks {

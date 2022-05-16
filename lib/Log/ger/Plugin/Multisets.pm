@@ -18,7 +18,7 @@ sub get_hooks {
     my %plugin_conf = @_;
 
     die "Please specify at least one of ".
-        "log_sub_prefixes|is_sub_prefixes|log_method_prefixes|is_method_prefixes"
+        "logger_sub_prefixes|level_checker_sub_prefixes|logger_method_prefixes|level_checker_method_prefixes"
         unless
         $plugin_conf{logger_sub_prefixes} ||
         $plugin_conf{level_checker_sub_prefixes} ||
